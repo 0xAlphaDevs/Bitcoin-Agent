@@ -6,22 +6,25 @@
     "dev": "concurrently \"next dev\" \"make-agent dev\"",
     "dev:agent": "next dev",
     "build": "next build",
-    "build:deploy": "next build && make-agent deploy -u https://agent-next-boilerplate.vercel.app",
+    "build:deploy": "next build && make-agent deploy -u https://bitte-agent-test-ruby.vercel.app",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@bitte-ai/agent-sdk": "0.1.8",
+    "@near-js/crypto": "^1.4.1",
     "near-api-js": "^5.0.1",
     "near-safe": "0.9.10",
     "next": "15.1.6",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "signet.js": "^0.0.1",
     "vercel-url": "0.2.6",
     "viem": "2.22.19"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@tailwindcss/postcss": "^4.0.3",
     "@types/node": "22.13.0",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
@@ -31,7 +34,6 @@
     "make-agent": "0.2.9",
     "postcss": "^8.5.1",
     "tailwindcss": "^4.0.3",
-    "@tailwindcss/postcss": "^4.0.3",
     "typescript": "5.7.3"
   }
 }

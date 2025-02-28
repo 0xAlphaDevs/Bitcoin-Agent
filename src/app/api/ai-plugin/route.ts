@@ -1,4 +1,4 @@
-import { ACCOUNT_ID, PLUGIN_URL } from "@/app/config";
+import { ACCOUNT_ID } from "@/app/config";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -11,7 +11,7 @@ export async function GET() {
     },
     servers: [
       {
-        url: PLUGIN_URL,
+        url: "https://bitte-agent-test-ruby.vercel.app/",
       },
     ],
     "x-mb": {
@@ -19,9 +19,9 @@ export async function GET() {
       assistant: {
         name: "yshv assistant",
         description:
-          "An assistant that answers with blockchain information, tells the user's account id, interacts with twitter, creates transaction payloads for NEAR and EVM blockchains, and flips coins.",
+          "An assistant that answers with blockchain information, tells the user's account id, interacts with twitter, creates transaction payloads for NEAR and BTC blockchains, and flips coins.",
         instructions:
-          "You create near and evm transactions, give blockchain information, tell the user's account id, interact with twitter and flip coins. For blockchain transactions, first generate a transaction payload using the appropriate endpoint (/api/tools/create-near-transaction or /api/tools/create-evm-transaction), then explicitly use the 'generate-transaction' tool for NEAR or 'generate-evm-tx' tool for EVM to actually send the transaction on the client side. For EVM transactions, make sure to provide the 'to' address (recipient) and 'amount' (in ETH) parameters when calling /api/tools/create-evm-transaction. Simply getting the payload from the endpoints is not enough - the corresponding tool must be used to execute the transaction.",
+          "You create near and btc transactions, give blockchain information, tell the user's account id, interact with twitter and flip coins. For blockchain transactions, first generate a transaction payload using the appropriate endpoint (/api/tools/create-near-transaction or /api/tools/create-btc-transaction), then explicitly use the 'generate-transaction' tool for NEAR or 'generate-evm-tx' tool for EVM to actually send the transaction on the client side. For EVM transactions, make sure to provide the 'to' address (recipient) and 'amount' (in ETH) parameters when calling /api/tools/create-evm-transaction. Simply getting the payload from the endpoints is not enough - the corresponding tool must be used to execute the transaction.",
         tools: [
           { type: "generate-transaction" },
           { type: "generate-evm-tx" },
@@ -58,7 +58,7 @@ export async function GET() {
       "/api/tools/get-user": {
         get: {
           summary: "get user information",
-          description: "Respond with user account ID",
+          description: "Respond with user account ID and BTC address",
           operationId: "get-user",
           responses: {
             "200": {
@@ -72,9 +72,9 @@ export async function GET() {
                         type: "string",
                         description: "The user's account ID",
                       },
-                      evmAddress: {
+                      btcAddress: {
                         type: "string",
-                        description: "The user's MPC EVM address",
+                        description: "The user's MPC BTC address",
                       },
                     },
                   },
@@ -286,12 +286,12 @@ export async function GET() {
           },
         },
       },
-      "/api/tools/create-evm-transaction": {
+      "/api/tools/create-btc-transaction": {
         get: {
-          operationId: "createEvmTransaction",
-          summary: "Create EVM transaction",
+          operationId: "createBtcTransaction",
+          summary: "Create BTC transaction",
           description:
-            "Generate an EVM transaction payload with specified recipient and amount to be used directly in the generate-evm-tx tool",
+            "Generate an BTC transaction payload with specified recipient and amount to be used ",
           parameters: [
             {
               name: "to",
@@ -300,7 +300,7 @@ export async function GET() {
               schema: {
                 type: "string",
               },
-              description: "The EVM address of the recipient",
+              description: "The BTC address of the recipient",
             },
             {
               name: "amount",
@@ -309,7 +309,7 @@ export async function GET() {
               schema: {
                 type: "string",
               },
-              description: "The amount of ETH to transfer",
+              description: "The amount of BTC to transfer",
             },
           ],
           responses: {

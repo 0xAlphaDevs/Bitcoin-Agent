@@ -1,0 +1,14 @@
+{
+  "evmSignRequest": {
+    "method": "eth_sendTransaction",
+    "chainId": 1,
+    "params": [
+      {
+        "from": "0x0000000000000000000000000000000000000000",
+        "to": "0x5C4185b8cCA5198a94bF2B97569DEb2bbAF1f50C",
+        "value": "0x2386f26fc10000",
+        "data": "0x"
+      }
+    ]
+  }
+}
