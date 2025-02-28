@@ -19,9 +19,9 @@ export async function GET() {
       assistant: {
         name: "yshv assistant",
         description:
-          "An assistant that answers with blockchain information, tells the user's account id, interacts with twitter, creates transaction payloads for NEAR and relays them using chain signatures on BTC blockchain, and flips coins.",
+          "An assistant that answers with blockchain information, tells the user's account id, show BTC balance, creates transaction payloads for NEAR and relays them using chain signatures on BTC blockchain, and flips coins.",
         instructions:
-          "You create near and btc transactions, give blockchain information, tell the user's account id, interact with twitter and flip coins. For blockchain transactions, first generate a transaction payload using the endpoint /api/tools/create-near-transaction, then explicitly use the 'generate-transaction' tool to sign payload using NEAR MPC contract. Then this signed txn can be sent to BTC testnet, make sure to provide the 'to' address (receiver), 'txHash' (from near signed txn) and 'amount' (in satoshi) parameters when calling /api/tools/send-btc-txn. If any parameter is not provided, then ask for it explicitly.",
+          "You create near txns powered by chain signatures and send them on btc testnet, give blockchain information, tell the user's account id, get BTC balance and flip coins. For blockchain transactions, first generate a transaction payload using the endpoint /api/tools/create-near-transaction, then explicitly use the 'generate-transaction' tool to sign payload using NEAR MPC contract. Then this signed txn can be sent to BTC testnet, make sure to provide the 'to' address (receiver), 'txHash' (from near signed txn) and 'amount' (in satoshi) parameters when calling /api/tools/send-btc-txn. If any parameter is not provided, then ask for it explicitly.",
         tools: [{ type: "generate-transaction" }, { type: "sign-message" }],
       },
     },
@@ -80,50 +80,11 @@ export async function GET() {
           },
         },
       },
-      "/api/tools/twitter": {
+      "/api/tools/get-btc-balance": {
         get: {
-          operationId: "getTwitterShareIntent",
-          summary: "Generate a Twitter share intent URL",
-          description:
-            "Creates a Twitter share intent URL based on provided parameters",
-          parameters: [
-            {
-              name: "text",
-              in: "query",
-              required: true,
-              schema: {
-                type: "string",
-              },
-              description: "The text content of the tweet",
-            },
-            {
-              name: "url",
-              in: "query",
-              required: false,
-              schema: {
-                type: "string",
-              },
-              description: "The URL to be shared in the tweet",
-            },
-            {
-              name: "hashtags",
-              in: "query",
-              required: false,
-              schema: {
-                type: "string",
-              },
-              description: "Comma-separated hashtags for the tweet",
-            },
-            {
-              name: "via",
-              in: "query",
-              required: false,
-              schema: {
-                type: "string",
-              },
-              description: "The Twitter username to attribute the tweet to",
-            },
-          ],
+          operationId: "get-btc-balance",
+          summary: "Get BTC balance",
+          description: "Respond with BTC address and balance",
           responses: {
             "200": {
               description: "Successful response",
@@ -132,9 +93,13 @@ export async function GET() {
                   schema: {
                     type: "object",
                     properties: {
-                      twitterIntentUrl: {
+                      btcBalance: {
                         type: "string",
-                        description: "The generated Twitter share intent URL",
+                        description: "The current BTC balance of the user",
+                      },
+                      btcAddress: {
+                        type: "string",
+                        description: "The user's BTC address",
                       },
                     },
                   },
@@ -178,7 +143,7 @@ export async function GET() {
       },
       "/api/tools/create-near-transaction": {
         get: {
-          operationId: "createNearTransaction",
+          operationId: "create-near-transaction",
           summary: "Create a NEAR transaction payload",
           description:
             "Generates a NEAR transaction payload for MPC contract to sign which can be used directly in the generate-tx tool",
@@ -284,10 +249,10 @@ export async function GET() {
       },
       "/api/tools/send-btc-txn": {
         get: {
-          operationId: "createBtcTransaction",
+          operationId: "send-btc-txn",
           summary: "Create BTC transaction",
           description:
-            "Generate an BTC transaction payload with specified recipient and amount to be used ",
+            "Send signed BTC transaction from NEAR MPC contract to BTC testnet",
           parameters: [
             {
               name: "to",
