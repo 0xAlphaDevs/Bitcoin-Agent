@@ -8,13 +8,10 @@ import {
   // MPCSignature,
   // BTCUnsignedTransaction,
 } from "signet.js";
-import { KeyPair } from "@near-js/crypto";
 
 const CONTRACT = new utils.chains.near.contract.NearChainSignatureContract({
   networkId: "mainnet",
   contractId: "v1.signer",
-  accountId: "",
-  keypair: KeyPair.fromRandom("ed25519"),
 });
 
 const btcRpcAdapter = new BTCRpcAdapters.Mempool(
@@ -22,34 +19,40 @@ const btcRpcAdapter = new BTCRpcAdapters.Mempool(
 );
 
 const Bitcoin = new SignetBTC({
-  network: "mainnet",
+  network: "testnet",
   contract: CONTRACT,
   btcRpcAdapter,
 });
 
 export async function GET() {
   const mbMetadataHeader = (await headers()).get("mb-metadata");
-  const mbMetadata: { accountId: string; evmAddress: string } | undefined =
+  const mbMetadata: { accountId: string } =
     mbMetadataHeader && JSON.parse(mbMetadataHeader);
 
   const { accountId } = mbMetadata || {};
+  console.log("accountId", accountId);
+
+  // const { searchParams } = new URL(request.url);
+  // const accountId = searchParams.get("accountId");
+
   const { address } = await Bitcoin.deriveAddressAndPublicKey(
-    "0xmht.near" as string,
+    accountId as string,
+    // "0xmht.near",
     "bitcoin-1"
   );
 
   const btcAddress = address;
 
-  if (!accountId) {
-    return NextResponse.json(
-      {
-        error: "Unable to find user data in the request",
-      },
-      {
-        status: 500,
-      }
-    );
-  }
+  // if (!accountId) {
+  //   return NextResponse.json(
+  //     {
+  //       error: "Unable to find user data in the request",
+  //     },
+  //     {
+  //       status: 500,
+  //     }
+  //   );
+  // }
 
   return NextResponse.json({ accountId, btcAddress });
 }
