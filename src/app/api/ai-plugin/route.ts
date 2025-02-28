@@ -19,14 +19,10 @@ export async function GET() {
       assistant: {
         name: "yshv assistant",
         description:
-          "An assistant that answers with blockchain information, tells the user's account id, interacts with twitter, creates transaction payloads for NEAR and BTC blockchains, and flips coins.",
+          "An assistant that answers with blockchain information, tells the user's account id, interacts with twitter, creates transaction payloads for NEAR and relays them using chain signatures on BTC blockchain, and flips coins.",
         instructions:
-          "You create near and btc transactions, give blockchain information, tell the user's account id, interact with twitter and flip coins. For blockchain transactions, first generate a transaction payload using the appropriate endpoint (/api/tools/create-near-transaction or /api/tools/create-btc-transaction), then explicitly use the 'generate-transaction' tool for NEAR or 'generate-evm-tx' tool for EVM to actually send the transaction on the client side. For EVM transactions, make sure to provide the 'to' address (recipient) and 'amount' (in ETH) parameters when calling /api/tools/create-evm-transaction. Simply getting the payload from the endpoints is not enough - the corresponding tool must be used to execute the transaction.",
-        tools: [
-          { type: "generate-transaction" },
-          { type: "generate-evm-tx" },
-          { type: "sign-message" },
-        ],
+          "You create near and btc transactions, give blockchain information, tell the user's account id, interact with twitter and flip coins. For blockchain transactions, first generate a transaction payload using the endpoint /api/tools/create-near-transaction, then explicitly use the 'generate-transaction' tool to sign payload using NEAR MPC contract. Then this signed txn can be sent to BTC testnet, make sure to provide the 'to' address (receiver), 'txHash' (from near signed txn) and 'amount' (in satoshi) parameters when calling /api/tools/send-btc-txn. If any parameter is not provided, then ask for it explicitly.",
+        tools: [{ type: "generate-transaction" }, { type: "sign-message" }],
       },
     },
     paths: {
@@ -185,7 +181,7 @@ export async function GET() {
           operationId: "createNearTransaction",
           summary: "Create a NEAR transaction payload",
           description:
-            "Generates a NEAR transaction payload for transferring tokens to be used directly in the generate-tx tool",
+            "Generates a NEAR transaction payload for MPC contract to sign which can be used directly in the generate-tx tool",
           parameters: [
             {
               name: "receiverId",
@@ -286,7 +282,7 @@ export async function GET() {
           },
         },
       },
-      "/api/tools/create-btc-transaction": {
+      "/api/tools/send-btc-txn": {
         get: {
           operationId: "createBtcTransaction",
           summary: "Create BTC transaction",
@@ -300,7 +296,7 @@ export async function GET() {
               schema: {
                 type: "string",
               },
-              description: "The BTC address of the recipient",
+              description: "The BTC address of the receiver",
             },
             {
               name: "amount",
@@ -311,6 +307,15 @@ export async function GET() {
               },
               description: "The amount of BTC to transfer",
             },
+            {
+              name: "txHash",
+              in: "query",
+              required: true,
+              schema: {
+                type: "string",
+              },
+              description: "The txHash of the signed txn from near",
+            },
           ],
           responses: {
             "200": {
@@ -320,26 +325,10 @@ export async function GET() {
                   schema: {
                     type: "object",
                     properties: {
-                      evmSignRequest: {
-                        type: "object",
-                        properties: {
-                          to: {
-                            type: "string",
-                            description: "Receiver address",
-                          },
-                          value: {
-                            type: "string",
-                            description: "Transaction value",
-                          },
-                          data: {
-                            type: "string",
-                            description: "Transaction data",
-                          },
-                          from: {
-                            type: "string",
-                            description: "Sender address",
-                          },
-                        },
+                      txHash: {
+                        type: "string",
+                        description:
+                          "The txHash of the txn relayed to BTC chain :",
                       },
                     },
                   },
