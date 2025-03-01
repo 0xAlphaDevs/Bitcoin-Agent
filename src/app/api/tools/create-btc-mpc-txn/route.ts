@@ -45,9 +45,17 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
 
+    console.log("btcAmount", btcAmount);
+    console.log("btcAmountInSatoshi", btcAmountInSatoshi);
+    console.log("accountId", accountId);
+    console.log("btcReceiverAddress", btcReceiverAddress);
+
     // get sender btc address
     const { address: btcSenderAddress, publicKey: btcSenderPublicKey } =
       await Bitcoin.deriveAddressAndPublicKey(accountId as string, "bitcoin-1");
+
+    console.log("btcSenderAddress", btcSenderAddress);
+    console.log("btcSenderPublicKey", btcSenderPublicKey);
 
     // create MPC payload and txn
     const { mpcPayloads } = await Bitcoin.getMPCPayloadAndTransaction({
