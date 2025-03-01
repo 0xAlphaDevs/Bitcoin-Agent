@@ -1,3 +1,3 @@
-## Bitte AI Next.js Boilerplate
+## Bitcon Bitte Agent
 
 Test
