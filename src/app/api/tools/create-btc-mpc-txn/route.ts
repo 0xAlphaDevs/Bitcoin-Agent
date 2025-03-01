@@ -62,7 +62,7 @@ export async function GET(request: Request) {
       publicKey: btcSenderPublicKey,
       from: btcSenderAddress,
       to: btcReceiverAddress,
-      value: btcAmount.toString(),
+      value: String(btcAmount),
     });
 
     const mpcTransactions = mpcPayloads.map(({ payload }) => ({
@@ -85,6 +85,8 @@ export async function GET(request: Request) {
         },
       ],
     }));
+
+    console.log("mpcTransactions", mpcTransactions);
 
     return NextResponse.json(mpcTransactions[0]);
   } catch (error) {
