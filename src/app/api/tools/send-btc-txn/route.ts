@@ -78,7 +78,7 @@ export async function GET(request: Request) {
       publicKey: btcSenderPublicKey,
       from: btcSenderAddress,
       to: btcReceiverAddress,
-      value: String(btcAmount),
+      value: btcAmountInSatoshi.toString(),
     });
 
     console.log("transaction", transaction);

@@ -63,7 +63,7 @@ export async function GET(request: Request) {
         publicKey: btcSenderPublicKey,
         from: btcSenderAddress,
         to: btcReceiverAddress,
-        value: String(btcAmount),
+        value: btcAmountInSatoshi.toString(),
       });
 
     const mpcTransactions = mpcPayloads.map(({ payload }) => ({
