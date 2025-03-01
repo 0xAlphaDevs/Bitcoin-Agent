@@ -96,6 +96,8 @@ export async function GET(request: Request) {
 
     // set maximum fee rate
     transaction.psbt.setMaximumFeeRate(10);
+    console.log("transaction fee rate", transaction.psbt.getFeeRate());
+    console.log("transaction fee", transaction.psbt.getFee());
 
     const signedTransaction = Bitcoin.addSignature({
       transaction,
