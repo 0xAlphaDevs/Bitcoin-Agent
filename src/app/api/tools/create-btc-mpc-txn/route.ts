@@ -38,14 +38,6 @@ export async function GET(request: Request) {
       );
     }
 
-    // Convert satoshi to BTC
-    const btcAmount = Number(btcAmountInSatoshi) / 10 ** 8;
-
-    if (!btcAmount) {
-      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
-    }
-
-    console.log("btcAmount", btcAmount);
     console.log("btcAmountInSatoshi", btcAmountInSatoshi);
     console.log("accountId", accountId);
     console.log("btcReceiverAddress", btcReceiverAddress);

@@ -9,6 +9,10 @@ import {
 } from "signet.js";
 import { providers, connect } from "near-api-js";
 import { toRSV } from "signet.js/src/chains/utils";
+import {
+  ExecutionOutcomeWithId,
+  FinalExecutionOutcome,
+} from "near-api-js/lib/providers";
 
 const CONTRACT = new utils.chains.near.contract.NearChainSignatureContract({
   networkId: "mainnet",
@@ -67,16 +71,19 @@ export async function GET(request: Request) {
       "FINAL"
     );
 
-    const mpcSignatures: RSVSignature[] = [
-      toRSV(providers.getTransactionLastResult(txFinalOutcome) as MPCSignature),
-    ];
+    // get SuccessValue from receipts_outcome and convert base64 to string
+    const decodedSuccessValue = getDecodedSuccessValue(
+      txFinalOutcome.receipts_outcome
+    );
+    const mpcSignature: MPCSignature = JSON.parse(
+      decodedSuccessValue as string
+    );
+
+    const mpcSignatures: RSVSignature[] = [toRSV(mpcSignature)];
 
     // get sender btc address
     const { address: btcSenderAddress, publicKey: btcSenderPublicKey } =
       await Bitcoin.deriveAddressAndPublicKey(accountId as string, "bitcoin-1");
-
-    // Convert satoshi to BTC
-    const btcAmount = Number(btcAmountInSatoshi) / 10 ** 8;
 
     const { transaction } = await Bitcoin.getMPCPayloadAndTransaction({
       publicKey: btcSenderPublicKey,
@@ -103,3 +110,41 @@ export async function GET(request: Request) {
     );
   }
 }
+
+const getDecodedSuccessValue = (receiptsOutcome: ExecutionOutcomeWithId[]) => {
+  let successReceiptId: string | null = null;
+  let successValue = null;
+
+  // Find the SuccessReceiptId
+  receiptsOutcome.forEach((receipt) => {
+    //@ts-ignore
+    if (receipt.outcome.status.SuccessReceiptId) {
+      //@ts-ignore
+      successReceiptId = receipt.outcome.status.SuccessReceiptId;
+    }
+  });
+
+  if (!successReceiptId) return null; // Return null if no SuccessReceiptId is found
+
+  // Find the SuccessValue corresponding to the SuccessReceiptId
+  receiptsOutcome.forEach((receipt) => {
+    if (
+      receipt.id === successReceiptId &&
+      //@ts-ignore
+      receipt.outcome.status.SuccessValue !== undefined
+    ) {
+      //@ts-ignore
+      successValue = receipt.outcome.status.SuccessValue;
+    }
+  });
+
+  if (!successValue) return null; // Return null if no SuccessValue is found
+
+  // Decode from Base64 to String
+  try {
+    return atob(successValue); // Decode Base64
+  } catch (error) {
+    console.error("Error decoding Base64:", error);
+    return null;
+  }
+};
