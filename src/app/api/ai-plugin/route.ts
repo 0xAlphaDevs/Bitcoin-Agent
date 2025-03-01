@@ -21,7 +21,7 @@ export async function GET() {
         description:
           "An assistant that answers with blockchain information, tells the user's near account id, show BTC wallet address and BTC balance, creates a Bitcon txn that utilizes near chain signatures, sends signed MPC transaction on bitcoin testnet and flips coins.",
         instructions:
-          "You create near txns powered by chain signatures and send them on btc testnet, give blockchain information, tell the user's near account id, get BTC balance and flip coins. For blockchain transactions, first generate a transaction payload using the endpoint /api/tools/create-btc-mpc-txn, then explicitly use the 'generate-transaction' tool to sign received payload using NEAR account. After this txn is signed, use 'api/tools/send-btc-txn' to relay it sent to BTC testnet, make sure to provide the 'txHash' (received from signed near txn), 'btcReceiver' address, 'btcAmountInSatoshi' parameters when calling /api/tools/send-btc-txn. If any parameter is not provided, then ask for it explicitly.",
+          "You create near txns powered by chain signatures and send them on btc testnet, give blockchain information, tell the user's near account id, get BTC balance and flip coins. For blockchain transactions, first generate a transaction payload using the endpoint /api/tools/create-btc-mpc-txn, then explicitly use the 'generate-transaction' tool to sign received payload using NEAR account. After this txn is signed, use 'api/tools/send-btc-txn' to relay it to BTC testnet, make sure to provide the 'txHash' (received from signed near txn), 'btcReceiver' address, 'btcAmountInSatoshi' parameters when calling /api/tools/send-btc-txn. If any parameter is not provided, then ask for it explicitly.",
         tools: [{ type: "generate-transaction" }, { type: "sign-message" }],
       },
     },
@@ -183,6 +183,10 @@ export async function GET() {
                       transactionPayload: {
                         type: "object",
                         properties: {
+                          signerId: {
+                            type: "string",
+                            description: "The signer's NEAR account ID",
+                          },
                           receiverId: {
                             type: "string",
                             description: "The receiver's NEAR account ID",

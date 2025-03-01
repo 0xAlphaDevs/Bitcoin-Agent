@@ -67,6 +67,7 @@ export async function GET(request: Request) {
       });
 
     const mpcTransactions = mpcPayloads.map(({ payload }) => ({
+      signerId: accountId as string,
       receiverId: "v1.signer",
       actions: [
         {

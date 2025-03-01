@@ -37,6 +37,10 @@ export async function GET(request: Request) {
     const btcAmountInSatoshi = searchParams.get("btcAmountInSatoshi");
     const txHash = searchParams.get("txHash");
 
+    console.log("btcReceiverAddress", btcReceiverAddress);
+    console.log("btcAmountInSatoshi", btcAmountInSatoshi);
+    console.log("txHash", txHash);
+
     if (!btcReceiverAddress || !btcAmountInSatoshi || !txHash) {
       console.log(
         `btcReceiver: ${btcReceiverAddress}\nbtcAmountInSatoshi: ${btcAmountInSatoshi}\ntxHash: ${txHash}`
