@@ -5,19 +5,19 @@ export async function GET() {
   const pluginData = {
     openapi: "3.0.0",
     info: {
-      title: "Boilerplate",
-      description: "API for the boilerplate",
+      title: "Bitcoin Agent",
+      description: "API for the Bitcoin Agent",
       version: "1.0.0",
     },
     servers: [
       {
-        url: "https://bitte-agent-test-ruby.vercel.app/",
+        url: "https://bitcoin-bitte-agent.vercel.app",
       },
     ],
     "x-mb": {
       "account-id": ACCOUNT_ID,
       assistant: {
-        name: "yshv assistant",
+        name: "Bitcoin Agent",
         description:
           "An assistant that answers with blockchain information, tells the user's near account id, show BTC wallet address and BTC balance, creates a Bitcon txn that utilizes near chain signatures, sends signed MPC transaction on bitcoin testnet and flips coins.",
         instructions:
