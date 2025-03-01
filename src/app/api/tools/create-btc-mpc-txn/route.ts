@@ -8,11 +8,11 @@ const CONTRACT = new utils.chains.near.contract.NearChainSignatureContract({
 });
 
 const btcRpcAdapter = new BTCRpcAdapters.Mempool(
-  "https://mempool.space/mainnet/api"
+  "https://mempool.space/testnet4/api"
 );
 
 const Bitcoin = new SignetBTC({
-  network: "mainnet",
+  network: "testnet",
   contract: CONTRACT,
   btcRpcAdapter,
 });
