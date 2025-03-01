@@ -8,11 +8,11 @@ const CONTRACT = new utils.chains.near.contract.NearChainSignatureContract({
 });
 
 const btcRpcAdapter = new BTCRpcAdapters.Mempool(
-  "https://mempool.space/testnet4/api"
+  "https://mempool.space/mainnet/api"
 );
 
 const Bitcoin = new SignetBTC({
-  network: "testnet",
+  network: "mainnet",
   contract: CONTRACT,
   btcRpcAdapter,
 });
@@ -58,12 +58,13 @@ export async function GET(request: Request) {
     console.log("btcSenderPublicKey", btcSenderPublicKey);
 
     // create MPC payload and txn
-    const { mpcPayloads } = await Bitcoin.getMPCPayloadAndTransaction({
-      publicKey: btcSenderPublicKey,
-      from: btcSenderAddress,
-      to: btcReceiverAddress,
-      value: String(btcAmount),
-    });
+    const { transaction, mpcPayloads } =
+      await Bitcoin.getMPCPayloadAndTransaction({
+        publicKey: btcSenderPublicKey,
+        from: btcSenderAddress,
+        to: btcReceiverAddress,
+        value: String(btcAmount),
+      });
 
     const mpcTransactions = mpcPayloads.map(({ payload }) => ({
       receiverId: "v1.signer",
