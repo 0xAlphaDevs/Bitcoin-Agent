@@ -79,7 +79,11 @@ export async function GET(request: Request) {
       decodedSuccessValue as string
     );
 
+    console.log("mpcSignature", mpcSignature);
+
     const mpcSignatures: RSVSignature[] = [toRSV(mpcSignature)];
+
+    console.log("mpcSignatures", mpcSignatures);
 
     // get sender btc address
     const { address: btcSenderAddress, publicKey: btcSenderPublicKey } =
