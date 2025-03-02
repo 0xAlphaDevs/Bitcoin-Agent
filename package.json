@@ -1,5 +1,5 @@
 {
-  "name": "agent-next-boilerplate",
+  "name": "bitcoin-agent",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,12 +13,18 @@
   "dependencies": {
     "@bitte-ai/agent-sdk": "0.1.8",
     "@near-js/crypto": "^1.4.1",
+    "@radix-ui/react-slot": "^1.1.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.477.0",
     "near-api-js": "^5.0.1",
     "near-safe": "0.9.10",
     "next": "15.1.6",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "signet.js": "^0.0.1",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss-animate": "^1.0.7",
     "vercel-url": "0.2.6",
     "viem": "2.22.19"
   },
