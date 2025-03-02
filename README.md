@@ -27,18 +27,27 @@ An AI agent that uses NEAR chain signatures to interact with Bitcoin L1 | Powere
 
 ## Multichain Transactions
 
-> Test MPC signed transaction to send 10000 sats on Bitcoin testnet using NEAR mainnet account.
+> Test MPC signed transaction to send 10,000 sats on Bitcoin testnet using NEAR mainnet account.
 
 - [Near MPC Signature Txn](https://nearblocks.io/txns/Hii4hGHe4WmVSvC9KqXiLNkux6FygZ9sYYHeXsPJ7KPJ) -> [Corresponding BTC Testnet Txn](https://mempool.space/testnet4/tx/6d21b9e660d2f73689b5bb417621a4588bad5a2a7fce03fc213b32c90f0f5d76)
 
 ## Sponsers Tech Stack
 
+- NEAR Mainnet
 - NEAR Chain Signatures
 - Bitte AI Agent
 
 ## High Level Architecture
 
+![High Level Architecture](/public/high-level-architecture.png)
+
 ## App Demo Screenshots
+
+![Landing Page](/public/landing-page.png)
+
+![Deployed AI Agent](/public/deployed-ai-agent.png)
+
+![AI Agent Running on Bitte.ai](/public/agent-on-bitte.png)
 
 ## Future Vision
 
