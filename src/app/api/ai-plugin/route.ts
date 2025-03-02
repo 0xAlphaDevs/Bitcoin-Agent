@@ -145,7 +145,7 @@ export async function GET() {
           },
         },
       },
-      // IN PROGRESS
+      // DONE
       "/api/tools/create-btc-mpc-txn": {
         get: {
           operationId: "create-btc-mpc-txn",
@@ -257,7 +257,7 @@ export async function GET() {
           },
         },
       },
-      // IN PROGRESS
+      // DONE
       "/api/tools/send-btc-txn": {
         get: {
           operationId: "send-btc-txn",
