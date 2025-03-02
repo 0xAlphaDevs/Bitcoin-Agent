@@ -4,6 +4,8 @@ An AI agent that uses NEAR chain signatures to interact with Bitcoin L1.
 
 ### Features
 
+-
+
 ## Table of Contents
 
 1. [All Links](#links)
